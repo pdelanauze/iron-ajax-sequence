@@ -1,0 +1,19 @@
+{
+  "name": "iron-ajax-sequence",
+  "version": "0.0.0",
+  "authors": [
+    "Patrick de Lanauze <patrick.delanauze@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.4",
+    "polymer": "Polymer/polymer#~1.1.0"
+  }
+}

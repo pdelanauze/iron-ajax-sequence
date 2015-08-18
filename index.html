@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>iron-ajax-sequence</title>
+  <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+
+  <link rel="import" href="../polymer/polymer.html"/>
+</head>
+<body>
+
+<iron-ajax-sequence></iron-ajax-sequence>
+
+<dom-module id="iron-ajax-sequence">
+
+  <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+
+  <template>
+
+    <iron-ajax id="ajax1"
+               url="one.json"
+               on-response="handleOneResponse"/>
+
+    <iron-ajax id="ajax2"
+               url="two.json"
+               on-response="handleTwoResponse"/>
+
+    <button id="btn">Go</button>
+
+    <template is="dom-if" if="[[recursed]]">
+      <h3>Recursion detected</h3>
+    </template>
+
+    <ol>
+      <template is="dom-repeat" items="[[events]]" as="event">
+        <li>[[event]]</li>
+      </template>
+    </ol>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'iron-ajax-sequence',
+      properties: {
+        events: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        }
+      },
+      ready: function () {
+        this.$.btn.addEventListener('click', function () {
+          this.startAjax();
+        }.bind(this));
+
+        // To avoid crapping out the browser
+        this.interval = setInterval(function () {
+          if (this.events.length > 10) {
+            this.push('events', 'recursed?!');
+            this.set('recursed', true);
+            clearInterval(this.interval);
+          }
+        }.bind(this), 200);
+
+      },
+      startAjax: function () {
+        this.push('events', 'starting ajax1');
+        this.$.ajax1.generateRequest();
+      },
+      handleOneResponse: function () {
+
+        if (this.recursed) {
+          return;
+        }
+
+        this.push('events', 'response handler of ajax1');
+        this.push('events', 'starting ajax2');
+        this.$.ajax2.generateRequest();
+      },
+      handleTwoResponse: function () {
+        this.push('events', 'response handler of ajax2 (this should only appear once)');
+      }
+    });
+  </script>
+</dom-module>
+
+</body>
+</html>
