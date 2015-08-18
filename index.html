@@ -69,17 +69,19 @@
         this.push('events', 'starting ajax1');
         this.$.ajax1.generateRequest();
       },
-      handleOneResponse: function () {
+      handleOneResponse: function (e) {
 
         if (this.recursed) {
           return;
         }
 
-        this.push('events', 'response handler of ajax1');
-        this.push('events', 'starting ajax2');
-        this.$.ajax2.generateRequest();
+        if (e.target === this.$.ajax1) {
+          this.push('events', 'response handler of ajax1');
+          this.push('events', 'starting ajax2');
+          this.$.ajax2.generateRequest();
+        }
       },
-      handleTwoResponse: function () {
+      handleTwoResponse: function (e) {
         this.push('events', 'response handler of ajax2 (this should only appear once)');
       }
     });
