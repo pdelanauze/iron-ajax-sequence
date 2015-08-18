@@ -75,11 +75,9 @@
           return;
         }
 
-        if (e.target === this.$.ajax1) {
-          this.push('events', 'response handler of ajax1');
-          this.push('events', 'starting ajax2');
-          this.$.ajax2.generateRequest();
-        }
+        this.push('events', 'response handler of ajax1');
+        this.push('events', 'starting ajax2');
+        this.$.ajax2.generateRequest();
       },
       handleTwoResponse: function (e) {
         this.push('events', 'response handler of ajax2 (this should only appear once)');
